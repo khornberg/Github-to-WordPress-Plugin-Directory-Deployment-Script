@@ -6,8 +6,9 @@
 # Source: https://github.com/thenbrent/multisite-user-management/blob/master/deploy.sh
 
 #prompt for plugin slug
-echo -e "Plugin Slug: \c"
-read PLUGINSLUG
+# echo -e "Plugin Slug: \c"
+# read PLUGINSLUG
+PLUGINSLUG="sermon-manager-import"
 
 # main config, set off of plugin slug
 CURRENTDIR=`pwd`
@@ -15,12 +16,12 @@ CURRENTDIR="$CURRENTDIR/$PLUGINSLUG"
 MAINFILE="$PLUGINSLUG.php" # this should be the name of your main php file in the wordpress plugin
 
 # git config
-GITPATH="$CURRENTDIR/" # this file should be in the base of your git repository
+GITPATH="$CURRENTDIR" # this file should be in the base of your git repository
 
 # svn config
 SVNPATH="/tmp/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
 SVNURL="http://plugins.svn.wordpress.org/$PLUGINSLUG/" # Remote SVN repo on WordPress.org, with no trailing slash
-SVNUSER="benbalter" # your svn username
+SVNUSER="khornberg" # your svn username
 
 # Let's begin...
 echo ".........................................."
@@ -31,19 +32,24 @@ echo ".........................................."
 echo 
 
 # Check version in readme.txt is the same as plugin file
-NEWVERSION1=`grep "^Stable tag" $GITPATH/readme.txt | awk -F' ' '{print $3}'`
+# on ubuntu $GITPATH/readme.txt seems to have an extra /
+NEWVERSION1=`grep "^Stable tag" $GITPATH/readme.md | awk -F' ' '{print $3}'`
 echo "readme version: $NEWVERSION1"
 NEWVERSION2=`grep "^Version" $GITPATH/$MAINFILE | awk -F' ' '{print $2}'`
 echo "$MAINFILE version: $NEWVERSION2"
 
 if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Versions don't match. Exiting...."; exit 1; fi
 
-echo "Versions match in readme.txt and PHP file. Let's proceed..."
+echo "Versions match in readme.md and PHP file. Let's proceed..."
 
 cd $GITPATH
-echo -e "Enter a commit message for this new version: \c"
-read COMMITMSG
-git commit -am "$COMMITMSG"
+
+# ask if not clean (staged, unstaged, untracked)
+if [ -n "$(git status --porcelain)" ]; then
+	echo -e "Enter a commit message for this new version: \c"
+	read COMMITMSG
+	git commit -am "$COMMITMSG"
+fi
 
 echo "Tagging new version in git"
 git tag -a "$NEWVERSION1" -m "Tagging version $NEWVERSION1"
@@ -65,6 +71,9 @@ README.md
 #export git -> SVN
 echo "Exporting the HEAD of master from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/trunk/
+
+# sed commands to convert readme.md to readme.txt
+sed -e 's/^#\{1\} \(.*\)/=== \1 ===/g' -e 's/^#\{2\} \(.*\)/== \1 ==/g' -e 's/^#\{3\} \(.*\)/= \1 =/g' -e 's/^#\{4,5\} \(.*\)/**\1**/g' "readme.md" > "$SVNPATH/trunk/readme.txt"
 
 #if submodule exist, recursively check out their indexes
 if [ -f ".gitmodules" ]

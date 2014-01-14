@@ -28,6 +28,7 @@ https://github.com/deanc/wordpress-plugin-git-svn
 Changes
 -------
 
+* Convert readme.me to readme.txt (khornberg)
 * Don't require existing SVN (thenbrent)
 * Move from plugin repo to parent
 * Prompt for plugin slug
