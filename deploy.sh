@@ -6,12 +6,12 @@
 # Source: https://github.com/thenbrent/multisite-user-management/blob/master/deploy.sh
 
 #prompt for plugin slug
-echo -e "Plugin Slug: \c""
+echo -e "Plugin Slug: \c"
 read PLUGINSLUG
 
 # main config, set off of plugin slug
 CURRENTDIR=`pwd`
-CURRENTDIR="$CURRENTDIR"
+CURRENTDIR="$CURRENTDIR/$PLUGINSLUG"
 MAINFILE="$PLUGINSLUG.php" # this should be the name of your main php file in the wordpress plugin
 
 # git config
