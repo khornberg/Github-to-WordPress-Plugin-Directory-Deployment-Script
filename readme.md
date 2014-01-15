@@ -29,6 +29,8 @@ Changes
 -------
 
 * Convert readme.me to readme.txt (khornberg)
+* Add assets from wp-assets (khornberg)
+* Use last commit message if working directory clean (khornberg)
 * Don't require existing SVN (thenbrent)
 * Move from plugin repo to parent
 * Prompt for plugin slug
