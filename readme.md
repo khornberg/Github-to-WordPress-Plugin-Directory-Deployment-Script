@@ -31,6 +31,7 @@ Changes
 * Convert readme.me to readme.txt (khornberg)
 * Add assets from wp-assets (khornberg)
 * Use last commit message if working directory clean (khornberg)
+* Change grep to find commented lines, use readme.md, and removed extra / causing problems (khornberg)
 * Don't require existing SVN (thenbrent)
 * Move from plugin repo to parent
 * Prompt for plugin slug
