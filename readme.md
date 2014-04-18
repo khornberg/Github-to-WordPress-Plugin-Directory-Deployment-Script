@@ -28,7 +28,7 @@ https://github.com/deanc/wordpress-plugin-git-svn
 Changes
 -------
 
-* Convert readme.me to readme.txt (khornberg)
+* Convert readme.md to readme.txt (khornberg)
 * Add assets from wp-assets (khornberg)
 * Use last commit message if working directory clean (khornberg)
 * Change grep to find commented lines, use readme.md, and removed extra / causing problems (khornberg)
